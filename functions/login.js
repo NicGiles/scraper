@@ -25,23 +25,38 @@ await page.click('#_evidon-accept-button');
     await page.type('input[type=email]', 'candidate+7@wonderbill.com');
     await page.type('input[type=password]', 'M/Cw?7w!G/6-');
     await page.click('button[type=submit]');
+    
+    await page.waitForSelector('div[data-test=manual]');
+    const accounts = await page.evaluate(() => {
 
-    const accounts = page.evaluate(() => {
     let accounts = [];
-    const accountsElem = document.querySelectorAll("._1mm64 _3xYY7 _2Y_70 _2oPLn");
+    const accountsElem = document.querySelectorAll('div[data-test=manual]');
     const accountsElemLen = accountsElem.length;
 
     for (let i = 0; i < accountsElemLen; i++) {
       try {
-        const accountsElem = accountsElem[i];
-	const name = accountsElem.querySelector("._1MwNX").innerText;
-	accounts.push({name});
-	} catch (e) {}
+	const name = accountsElem[i].querySelector("._1MwNx").innerText;
+//accounts.push({name}); commenting out whilst formatting
+	const amount_raw = accountsElem[i].querySelector("._2JODS").innerText;
+	const amount = amount_raw.replace(/\n/gm, "");
+	const due = accountsElem[i].querySelector("._2U5cr").innerText;
+	accounts.push({name, amount, due});
+	} catch (e) {console.error(e)}
 }
-console.log(accounts)
 	return accounts; });
-
+console.log(accounts)
 
 ;}
 
 module.exports = login;
+
+//<div class="_1MwNx"><span class="_2u4DS">Donec bibendum</span></div>
+//_1iCxR
+
+          //  "name": "My First Account",
+          //  "amount": "£12.34",
+          //  "lastPaymentDate": "1970-01-01",
+          //  "paidYearAmount": "£123.45",
+          //  "outstandingYearAmount": "£123.45"
+
+//{name: 'Donec bibendum', amount_string: '£345.09', due: '18th August'}
