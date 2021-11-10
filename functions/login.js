@@ -1,7 +1,7 @@
 
 const login = async () => {
-
  const { launchChrome } = require("./browser");
+ const formatDate  = require("./formatDate");
 
    const [newPage, exitChrome] = await launchChrome();
   const [page] = await newPage();
@@ -27,9 +27,10 @@ await page.click('#_evidon-accept-button');
     await page.click('button[type=submit]');
     
     await page.waitForSelector('div[data-test=manual]');
-    const accounts = await page.evaluate(() => {
+    const {accounts, dates} = await page.evaluate(() => {
 
     let accounts = [];
+    let dates = [];
     const accountsElem = document.querySelectorAll('div[data-test=manual]');
     const accountsElemLen = accountsElem.length;
 
@@ -41,12 +42,16 @@ await page.click('#_evidon-accept-button');
 	const amount = amount_raw.replace(/\n/gm, "");
 	const due = accountsElem[i].querySelector("._2U5cr").innerText;
 	accounts.push({name, amount, due});
+	dates.push({due});
 	} catch (e) {console.error(e)}
 }
-	return accounts; });
-console.log(accounts)
+	return {accounts, dates};
+console.log(dates);
+console.log(accounts);
+console.log(dates);
 
 ;}
+}
 
 module.exports = login;
 
