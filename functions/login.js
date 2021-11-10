@@ -24,7 +24,24 @@ await page.click('#_evidon-accept-button');
 
     await page.type('input[type=email]', 'candidate+7@wonderbill.com');
     await page.type('input[type=password]', 'M/Cw?7w!G/6-');
-    await page.click('button[type=submit]');}
-;
+    await page.click('button[type=submit]');
+
+    const accounts = page.evaluate(() => {
+    let accounts = [];
+    const accountsElem = document.querySelectorAll("._1mm64 _3xYY7 _2Y_70 _2oPLn");
+    const accountsElemLen = accountsElem.length;
+
+    for (let i = 0; i < accountsElemLen; i++) {
+      try {
+        const accountsElem = accountsElem[i];
+	const name = accountsElem.querySelector("._1MwNX").innerText;
+	accounts.push({name});
+	} catch (e) {}
+}
+console.log(accounts)
+	return accounts; });
+
+
+;}
 
 module.exports = login;
