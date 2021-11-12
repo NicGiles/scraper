@@ -39,7 +39,8 @@ const login = async () => {
           const amount_raw = accountsElem[i].querySelector("._2JODS").innerText;
           const amount = amount_raw.replace(/\n/gm, "");
           const due = accountsElem[i].querySelector("._2U5cr").innerText;
-          accounts.push({name, amount, due});
+          const paidYearAmount = 1
+	  accounts.push({name, amount, due, paidYearAmount});
           dates.push({due});
         } catch (e) {
           console.error(e)
@@ -61,14 +62,20 @@ console.log(accounts)
 const date = formatDate(accounts[i].due);
 const due  = date.minus({month:1}).toSQLDate();
 const month = date.month-1;
+const amountInt = parseFloat(accounts[i].amount.substring(1))
 
+accounts[i].paidYearAmount = '£'+(month * amountInt).toFixed(2)
+//`parseFloat(accounts[i].amount.substring(1))`
 accounts[i].due = due
 
 console.log(month)
+//accounts.push({month});
 }
 
 console.log(accounts)
 }
+
+//console.log(month)
 
 module.exports = login;
 
