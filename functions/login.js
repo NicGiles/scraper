@@ -1,14 +1,14 @@
 
 const login = async () => {
- const { launchChrome } = require("./browser");
- const formatDate  = require("./formatDate");
+  const { launchChrome } = require("./browser");
+  const formatDate  = require("./formatDate");
 
-   const [newPage, exitChrome] = await launchChrome();
+  const [newPage, exitChrome] = await launchChrome();
   const [page] = await newPage();
 
   if (!page) return;
 
-  // Flow 2 => Visiting a wonderbill's dashboard
+  // Flow 2 => Visiting  wonderbill's dashboard
   const url = "https://my.wonderbill.com/dashboard";
   console.log("Opening " + url);
   try {
@@ -20,40 +20,58 @@ const login = async () => {
     await exitChrome(); // close chrome on error
     return; // exiting the function
   }
-await page.click('#_evidon-accept-button');
+    await page.click('#_evidon-accept-button');
 
     await page.type('input[type=email]', 'candidate+7@wonderbill.com');
     await page.type('input[type=password]', 'M/Cw?7w!G/6-');
     await page.click('button[type=submit]');
-    
+
     await page.waitForSelector('div[data-test=manual]');
     const {accounts, dates} = await page.evaluate(() => {
+      let accounts = [];
+      let dates = [];
+      const accountsElem = document.querySelectorAll('div[data-test=manual]');
+      const accountsElemLen = accountsElem.length;
 
-    let accounts = [];
-    let dates = [];
-    const accountsElem = document.querySelectorAll('div[data-test=manual]');
-    const accountsElemLen = accountsElem.length;
+      for (let i = 0; i < accountsElemLen; i++) {
+        try {
+          const name = accountsElem[i].querySelector("._1MwNx").innerText;
+          const amount_raw = accountsElem[i].querySelector("._2JODS").innerText;
+          const amount = amount_raw.replace(/\n/gm, "");
+          const due = accountsElem[i].querySelector("._2U5cr").innerText;
+          accounts.push({name, amount, due});
+          dates.push({due});
+        } catch (e) {
+          console.error(e)
+        }
+      }
 
-    for (let i = 0; i < accountsElemLen; i++) {
-      try {
-	const name = accountsElem[i].querySelector("._1MwNx").innerText;
-//accounts.push({name}); commenting out whilst formatting
-	const amount_raw = accountsElem[i].querySelector("._2JODS").innerText;
-	const amount = amount_raw.replace(/\n/gm, "");
-	const due = accountsElem[i].querySelector("._2U5cr").innerText;
-	accounts.push({name, amount, due});
-	dates.push({due});
-	} catch (e) {console.error(e)}
+      return {accounts, dates};
+    });
+
+  console.log(accounts);
+  console.log(dates);
+
+//working date function but need to take 1 month off.
+for (let i = 0; i < accounts.length; i++) {
+//accounts[i].due = formatDate(accounts[i].due)
+console.log(accounts)
+
+
+const date = formatDate(accounts[i].due);
+const due  = date.minus({month:1}).toSQLDate();
+const month = date.month-1;
+
+accounts[i].due = due
+
+console.log(month)
 }
-	return {accounts, dates};
-console.log(dates);
-console.log(accounts);
-console.log(dates);
 
-;}
+console.log(accounts)
 }
 
 module.exports = login;
+
 
 //<div class="_1MwNx"><span class="_2u4DS">Donec bibendum</span></div>
 //_1iCxR
