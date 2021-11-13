@@ -2,6 +2,7 @@
 const login = async () => {
   const { launchChrome } = require("./browser");
   const formatDate  = require("./formatDate");
+  const fs = require("fs");
 
   const [newPage, exitChrome] = await launchChrome();
   const [page] = await newPage();
@@ -68,14 +69,20 @@ const amountInt = parseFloat(accounts[i].amount.substring(1))
 accounts[i].oustandingYearAmount = '£'+((12 - month) * amountInt).toFixed(2)
 accounts[i].paidYearAmount = '£'+(month * amountInt).toFixed(2)
 accounts[i].due = due
+//saveAsJson();
 
 console.log(month)
 //accounts.push({month});
+//const saveAsJson = saveAsJson(accounts);
 }
+
 
 console.log(accounts)
-}
+//}
 
+let data = JSON.stringify(accounts);
+fs.writeFileSync('savedData.json', data);
+}
 //console.log(month)
 
 module.exports = login;
