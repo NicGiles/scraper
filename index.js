@@ -1,3 +1,3 @@
 
- const login = require("./functions/login");
-login();
+const scraper = require("./functions/scraper");
+ scraper();
