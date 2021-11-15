@@ -38,13 +38,13 @@ const scraper = async () => {
         const amount = amount_raw.replace(/\n/gm, "");
         const due = accountsElem[i].querySelector("._2U5cr").innerText;
         const paidYearAmount = 0;
-        const oustandingYearAmount = 0;
+        const outstandingYearAmount = 0;
         accounts.push({
           name,
           amount,
           due,
           paidYearAmount,
-          oustandingYearAmount,
+          outstandingYearAmount,
         });
       } catch (e) {
         console.error(e);
@@ -62,7 +62,7 @@ const scraper = async () => {
     const month = date.month - 1;
     const amountInt = parseFloat(accounts[i].amount.substring(1));
 
-    accounts[i].oustandingYearAmount =
+    accounts[i].outstandingYearAmount =
       "£" + ((12 - month) * amountInt).toFixed(2);
     accounts[i].paidYearAmount = "£" + (month * amountInt).toFixed(2);
     accounts[i].due = due;
