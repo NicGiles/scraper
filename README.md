@@ -9,7 +9,7 @@ A puppeteer driven scraper designed to retrieve account details from Wonderbill.
 
 ### usage
 
-`node .index.js'
+`node . [username] [password]`
 
 This wil run the programme and save the scraped data to /data/accounts.json.
 
