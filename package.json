@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^11.0.0"
+    "luxon": "^2.1.1",
+    "minimist": "^1.2.5",
+    "node-html-parser": "^5.1.0",
+    "puppeteer": "^11.0.0",
+    "tidyverse": "^0.1.9"
   }
 }

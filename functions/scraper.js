@@ -64,7 +64,7 @@ const scraper = async () => {
 
   console.log(accounts)
 
-	let data = JSON.stringify(accounts);
+	let data = JSON.stringify(accounts, null, 2);
 	 fs.writeFileSync('data/accounts.json', data);
 	 console.log("output saved to data/accounts.json.")
 	exitChrome();
