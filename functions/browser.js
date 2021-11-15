@@ -1,4 +1,3 @@
-
 const launchChrome = async () => {
   const puppeteer = require("puppeteer");
 
@@ -8,9 +7,8 @@ const launchChrome = async () => {
     "--disable-setuid-sandbox",
     "--disable-accelerated-2d-canvas",
     "--disable-gpu",
-    "--lang=en-US,en"
+    "--lang=en-US,en",
   ];
- 
 
   let chrome;
   try {
@@ -20,8 +18,8 @@ const launchChrome = async () => {
       ignoreHTTPSErrors: true, // ignore https error
       args,
       ignoreDefaultArgs: ["--disable-extensions"],
-     });
-  } catch(e) {
+    });
+  } catch (e) {
     console.error("Unable to launch chrome", e);
     // return two functions to silent errors
     return [() => {}, () => {}];
@@ -31,8 +29,8 @@ const launchChrome = async () => {
     if (!chrome) return;
     try {
       await chrome.close();
-    } catch(e) {}
-  }
+    } catch (e) {}
+  };
 
   const newPage = async () => {
     try {
@@ -41,10 +39,10 @@ const launchChrome = async () => {
         if (!page) return;
         try {
           await page.close();
-        } catch(e) {}
-      }
+        } catch (e) {}
+      };
       return [page, closePage];
-    } catch(e) {
+    } catch (e) {
       console.error("Unable to create a new page");
       return [];
     }
@@ -54,4 +52,3 @@ const launchChrome = async () => {
 };
 
 module.exports = { launchChrome };
-

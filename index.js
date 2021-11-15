@@ -1,3 +1,2 @@
-
 const scraper = require("./functions/scraper");
- scraper();
+scraper();
