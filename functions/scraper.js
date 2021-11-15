@@ -20,8 +20,8 @@ const scraper = async () => {
   }
   await page.click("#_evidon-accept-button");
   console.log("Logging into wonderbill dashboard");
-  await page.type("input[type=email]", "candidate+7@wonderbill.com");
-  await page.type("input[type=password]", "M/Cw?7w!G/6-");
+  await page.type("input[type=email]", process.argv[2]);
+  await page.type("input[type=password]", process.argv[3]);
   await page.click("button[type=submit]");
 
   await page.waitForSelector("div[data-test=manual]");
